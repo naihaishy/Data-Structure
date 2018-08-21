@@ -53,9 +53,9 @@ TreeNode* searchRecursive(TreeNode *root, int val)
 		return root;
 
 	if (val < root->key)
-		searchRecursive(root->left, val);
+		return searchRecursive(root->left, val);
 	else
-		searchRecursive(root->right, val);
+		return searchRecursive(root->right, val);
 
 }
 
@@ -126,6 +126,46 @@ void inorderTraversalNonRecursive(TreeNode *root, std::vector<int> &res)
 
 
 
+}
+
+/**/
+TreeNode* successor(TreeNode *x) 
+{
+	if (x == nullptr)
+		return x;
+
+	if (x->right != nullptr)
+		return minimum(x->right);
+	
+
+	TreeNode * y = x->parent;
+	while (y != nullptr && x == y->right) 
+	{
+		x = y;
+		y = x->parent;
+	}
+
+	return y;
+}
+
+/**/
+TreeNode* predecessor(TreeNode *x)
+{
+	if (x == nullptr)
+		return x;
+
+	if (x->left != nullptr)
+		return maximum(x->left);
+
+
+	TreeNode * y = x->parent;
+	while (y != nullptr && x == y->left)
+	{
+		x = y;
+		y = x->parent;
+	}
+
+	return y;
 }
 
 
@@ -251,6 +291,18 @@ int* creatRandArray(int n)
 	return res;
 }
 
+/**/
+void printBSTree(TreeNode *root) 
+{
+	std::vector<int> res;
+	inorderTraversalRecursive(root, res);
+	//inorderTraversalNonRecursive(root, res);
+	std::cout << "inorderTraversalRecursive ";
+	for (int a : res) {
+		std::cout << a << " -";
+	}
+	std::cout << std::endl;
+}
 
 
 
@@ -263,7 +315,7 @@ int main()
 	TreeNode *root = new TreeNode(5);
 
 	buildBSTree(root, a, 7);
-
+	printBSTree(root);
 
 
 	TreeNode *max = maximum(root);
@@ -273,18 +325,24 @@ int main()
 	std::cout << "min " << min->key << std::endl;
 
 	TreeNode *searchR	= searchRecursive(root, 6);
-	TreeNode *searchNR	= searchNonRecursive(root, 6);
+	TreeNode *searchNR	= searchNonRecursive(root, 3);
 
 	std::cout << "searchRecursive " << searchR->key << std::endl;
 	std::cout << "searchNonRecursive " << searchNR->key << std::endl;
 
-	std::vector<int> res;
-	//inorderTraversalRecursive(root, res);
-	inorderTraversalNonRecursive(root, res);
-	for (int a : res) {
-		std::cout << a << " -";
-	}
 
+	TreeNode *succe = successor(searchNR);
+	TreeNode *prede = predecessor(searchNR);
+
+	std::cout << "successor "	<< succe->key << std::endl;
+	std::cout << "predecessor " << prede->key << std::endl;
+
+	// delete node
+	deleteBSTree(root, searchNR);
+	printBSTree(root);
+
+	// insert node
+	
 
 	std::cout << "\n Hello World!\n";
 }
