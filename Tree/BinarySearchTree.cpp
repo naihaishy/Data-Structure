@@ -1,5 +1,4 @@
-
-// ¶þ²æËÑË÷Ê÷ Binary Search Tree ÊµÏÖ
+// Implements of Binary Search Tree
 
 #include "pch.h"
 #include "time.h"
